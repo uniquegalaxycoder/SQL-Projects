@@ -1,5 +1,6 @@
 -- Leads Table 
 
+
 create table campaign (
   campaign_id bigint primary key,
   campaign_name varchar(50),
