@@ -117,7 +117,11 @@ INSERT INTO leads (leads_id, event_date, event, phone_number, ingested_at, campa
 ( 74,'2024-02-19','video_start','8685569093','2024-02-20',5 ),
 ( 75,'2024-02-29','form_start','8804831462','2024-03-01',3 ),
 ( 76,'2024-02-13','view_item','4952769415','2024-02-14',3 ),
-( 77,'2024-03-03','scroll','5137486353','2024-03-04',1 );
+( 77,'2024-03-03','scroll','5137486353','2024-03-04',1 ),
+( 78,'2024-02-14','ad_click','389250891','2024-02-15',2 ),
+( 79,'2024-02-16','ad_click','8756784098','2024-02-17',2),
+( 80,'2024-02-19','ad_click','8897645309','2024-02-20',2),
+( 81,'2024-03-01','ad_click','8234567892','2024-03-2',2);
 
 INSERT INTO sales (sales_id, assigned_date, calling_campaign, call_date, invoice_id, invoice_date, invoice_amount, discount_offered, payment_source, leads_id) VALUES
 (1,'2024-01-22','Winter_Sale','2024-01-23',101,'2024-01-24', 11500, 0.08, 'Credit', 1 ),
@@ -250,10 +254,24 @@ from
 
 )
 
-select * from cte2
+select * from cte2;
 
 
+--  Lead Quality: Which events lead to the most actual sales?
 
+select
+  a.event,
+  count(distinct a.leads_id) as total_leads,
+  sum(case when b.call_date is not null then 1 else 0 end ) as total_call,
+  sum(case when b.invoice_id is not null then 1 else 0 end) as total_sold
+from 
+  leads as a 
+left join 
+  sales as b 
+on 
+  a.leads_id = b.leads_id
+group by a.event 
+order by total_sold desc ;
 
 
 
